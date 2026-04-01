@@ -258,14 +258,6 @@ const pokemonCache = new Cache<Pokemon>(POKEMON_CONFIG.CACHE_TTL)
 const pokemonListCache = new Cache<PokemonListItem[]>(POKEMON_CONFIG.CACHE_TTL)
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ### Code Standards
 
 - TypeScript strict mode enabled
@@ -278,20 +270,8 @@ const pokemonListCache = new Cache<PokemonListItem[]>(POKEMON_CONFIG.CACHE_TTL)
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [PokeAPI](https://pokeapi.co/) for Pokemon data
 - [Expo](https://expo.dev/) for the development platform
 - [React Native](https://reactnative.dev/) community
-
-## 📞 Support
-
-For questions or issues:
-
-- Create an issue on GitHub
-- Check the documentation
-- Review existing issues for similar problems
-
----
-
-**Note**: This is an educational project demonstrating senior-level React Native development practices. The mock API implementation allows for development without external dependencies.
