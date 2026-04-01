@@ -1,4 +1,5 @@
 import TypeBadge from "@/components/TypeBadge";
+import { COLORS } from "@/constants/typeColors";
 import { fetchPokemonDetails, fetchPokemonList } from "@/services/pokeApi";
 import { Pokemon } from "@/types";
 import { useRouter } from "expo-router";
@@ -63,7 +64,7 @@ export default function HomeScreen() {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center bg-slate-50">
-        <ActivityIndicator size="large" color="#2563eb" />
+        <ActivityIndicator size="large" color={COLORS.primary} />
         <Text className="mt-4 text-gray-600">Loading Pokédex...</Text>
       </View>
     );
@@ -82,7 +83,7 @@ export default function HomeScreen() {
       {/* Header with Search */}
       <Appbar.Header
         style={{
-          backgroundColor: "#2563eb",
+          backgroundColor: COLORS.hero,
           paddingBottom: 24,
           // paddingTop: 16,
         }}
@@ -128,35 +129,23 @@ export default function HomeScreen() {
           paddingHorizontal: 16,
         }}
         renderItem={({ item }) => {
-          const p = item.details || item;
-          const types = p.types.map((t: any) => t.type.name) || ["Unknown"];
           return (
             <TouchableOpacity
-              onPress={() => openPokemonDetails(p)}
+              onPress={() => openPokemonDetails(item)}
               className="w-[48%] mb-4"
             >
               <Card className="bg-white rounded-2xl overflow-hidden shadow-sm">
                 <View className="flex-row justify-between items-center p-4">
                   <Text className="text-lg font-bold text-gray-900">
-                    {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
-                  </Text>
-                  <Text className="text-lg font-bold text-gray-900">
-                    #{String(p.id).padStart(3, "0")}{" "}
+                    {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                   </Text>
                 </View>
                 <View className="h-40 items-center justify-center p-4">
-                  <Image
-                    source={{ uri: p.sprites.front_default }}
-                    style={{ width: 100, height: 100 }}
-                    resizeMode="contain"
-                  />
+                  <Text className="text-gray-500">Pokemon Image</Text>
                 </View>
-
                 <View className="p-4">
-                  <View className="flex-row justify-between items-center gap-2 mt-3">
-                    {types.map((type: string, index: number) => (
-                      <TypeBadge key={index} type={type} />
-                    ))}
+                  <View className="flex-row justify-center items-center gap-2 mt-3">
+                    <TypeBadge type="normal" />
                   </View>
                 </View>
               </Card>

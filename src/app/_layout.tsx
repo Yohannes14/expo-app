@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/typeColors";
 import { Stack } from "expo-router";
 import React from "react";
 import { PaperProvider } from "react-native-paper";
@@ -8,13 +9,14 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <PaperProvider>
+        {/* <StatusBar /> */}
         <Stack
           screenOptions={{
-            headerStyle: { backgroundColor: "#2563eb" },
-            headerTintColor: "#fff",
+            headerStyle: { backgroundColor: COLORS.hero },
+            headerTintColor: COLORS.white,
             headerShadowVisible: false,
             headerTitleStyle: { fontWeight: "bold" },
-            contentStyle: { backgroundColor: "#f8fafc" },
+            contentStyle: { backgroundColor: COLORS.background },
           }}
         >
           <Stack.Screen name="index" options={{ title: "" }} />
