@@ -33,10 +33,6 @@ src/
 │   └── index.ts         # Config exports
 ├── constants/           # App constants
 │   └── typeColors.ts    # Pokemon type color mappings
-├── hooks/               # Custom React hooks
-│   ├── use-color-scheme.ts
-│   ├── use-color-scheme.web.ts
-│   └── use-theme.ts
 ├── services/            # API services
 │   └── pokeApi.ts       # Pokemon API service with mock support
 ├── types/               # TypeScript type definitions
