@@ -1,7 +1,7 @@
 import TypeBadge from "@/components/TypeBadge";
 import { COLORS } from "@/constants/typeColors";
 import { fetchPokemonDetails, fetchPokemonList } from "@/services/pokeApi";
-import { Pokemon } from "@/types";
+import { Pokemon, PokemonListItem } from "@/types";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -13,9 +13,13 @@ import {
 } from "react-native";
 import { Appbar, Card, Searchbar, Text } from "react-native-paper";
 
+interface PokemonWithDetails extends PokemonListItem {
+  details: Pokemon;
+}
+
 export default function HomeScreen() {
-  const [pokemonList, setPokemonList] = useState<any[]>([]);
-  const [filteredList, setFilteredList] = useState<any[]>([]);
+  const [pokemonList, setPokemonList] = useState<PokemonWithDetails[]>([]);
+  const [filteredList, setFilteredList] = useState<PokemonWithDetails[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,19 +29,25 @@ export default function HomeScreen() {
   const loadPokemon = async () => {
     try {
       setLoading(true);
-      const list = await fetchPokemonList(151);
+      setError(null);
+      const list = await fetchPokemonList(30); // Load fewer Pokemon initially for better performance
       const detailedList = await Promise.all(
-        list.map(async (pokemon: any) => {
-          const details = await fetchPokemonDetails(pokemon.name);
-          return { ...pokemon, details };
+        list.map(async (pokemon) => {
+          try {
+            const details = await fetchPokemonDetails(pokemon.name);
+            return { ...pokemon, details };
+          } catch (err) {
+            console.warn(`Failed to load details for ${pokemon.name}:`, err);
+            // Return pokemon without details if loading fails
+            return { ...pokemon, details: null };
+          }
         }),
       );
-      console.log("Detailed Pokémon List:", detailedList);
       setPokemonList(detailedList);
       setFilteredList(detailedList);
     } catch (error) {
       console.error("Error loading Pokémon:", error);
-      setError("Failed to load Pokémon details.");
+      setError("Failed to load Pokémon. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -129,6 +139,11 @@ export default function HomeScreen() {
           paddingHorizontal: 16,
         }}
         renderItem={({ item }) => {
+          const pokemon = item.details;
+          const displayName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
+          const imageUri = pokemon?.sprites?.front_default;
+          const types = pokemon?.types?.map(t => t.type.name) || ['normal'];
+
           return (
             <TouchableOpacity
               onPress={() => openPokemonDetails(item)}
@@ -137,15 +152,30 @@ export default function HomeScreen() {
               <Card className="bg-white rounded-2xl overflow-hidden shadow-sm">
                 <View className="flex-row justify-between items-center p-4">
                   <Text className="text-lg font-bold text-gray-900">
-                    {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                    {displayName}
                   </Text>
+                  {pokemon && (
+                    <Text className="text-lg font-bold text-gray-900">
+                      #{String(pokemon.id).padStart(3, "0")}
+                    </Text>
+                  )}
                 </View>
-                <View className="h-40 items-center justify-center p-4">
-                  <Text className="text-gray-500">Pokemon Image</Text>
+                <View className="h-32 items-center justify-center p-4">
+                  {imageUri ? (
+                    <Image
+                      source={{ uri: imageUri }}
+                      style={{ width: 80, height: 80 }}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <Text className="text-gray-500 text-sm">Loading...</Text>
+                  )}
                 </View>
                 <View className="p-4">
                   <View className="flex-row justify-center items-center gap-2 mt-3">
-                    <TypeBadge type="normal" />
+                    {types.slice(0, 2).map((type, index) => (
+                      <TypeBadge key={index} type={type} />
+                    ))}
                   </View>
                 </View>
               </Card>
