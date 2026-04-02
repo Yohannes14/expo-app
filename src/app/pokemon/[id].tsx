@@ -1,55 +1,23 @@
-// app/pokemon/[id].tsx
+import ErrorComponent from "@/components/ErrorComponent";
+import LoadingComponent from "@/components/LoadingComponent";
 import StatBar from "@/components/Statbar";
-import { Pokemon } from "@/types";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image, ScrollView, Text, View } from "react-native";
+import { usePokemonDetails } from "@/hooks/usePokemonDetails";
+import { useLocalSearchParams } from "expo-router";
+import React from "react";
+import { Image, ScrollView, Text, View } from "react-native";
 import { Button, Card } from "react-native-paper";
 import TypeBadge from "../../components/TypeBadge";
-import { fetchPokemonDetails } from "../../services/pokeApi";
 
-export default function PokemonDetailScreen() {
+const PokemonDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
-
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (id) loadPokemon();
-  }, [id]);
-
-  const loadPokemon = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchPokemonDetails(id!);
-      setPokemon(data);
-    } catch (err) {
-      setError("Failed to load Pokémon details.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: pokemon, loading, error } = usePokemonDetails(id);
 
   if (loading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-slate-50">
-        <ActivityIndicator size="large" color="#2563eb" />
-      </View>
-    );
+    return <LoadingComponent message="Loading Pokédex..." />;
   }
-
   if (error || !pokemon) {
-    return (
-      <View className="flex-1 justify-center items-center bg-slate-50">
-        <Text className="text-red-500 text-lg">
-          {error || "Pokémon not found"}
-        </Text>
-      </View>
-    );
+    return <ErrorComponent message={error?.message || "Pokémon not found"} />;
   }
-
   const types = pokemon.types.map((t) => t.type.name);
   const heightInMeters = (pokemon.height / 10).toFixed(1);
   const weightInKg = (pokemon.weight / 10).toFixed(1);
@@ -171,4 +139,6 @@ export default function PokemonDetailScreen() {
       </View>
     </ScrollView>
   );
-}
+};
+
+export default PokemonDetailScreen;
