@@ -57,8 +57,8 @@ export default function HomeScreen() {
       >
         <View className="flex-1 justify-center items-center px-4">
           <Text
-            className="text-lg font-semibold text-center mb-4"
-            style={{ color: "#ffffff" }}
+            className="text-2xl font-semibold text-center mb-4"
+            style={{ color: COLORS.white }}
           >
             Who are you looking for?
           </Text>
@@ -67,17 +67,39 @@ export default function HomeScreen() {
               placeholder="Search Pokémon (e.g. Pikachu)"
               onChangeText={setSearchQuery}
               value={searchQuery}
-              className="bg-white rounded-xl"
-              style={{ backgroundColor: "#ffffff", paddingRight: 80 }}
-              inputStyle={{ color: "#1f2937" }}
+              className="bg-white rounded-2xl"
+              style={{
+                backgroundColor: COLORS.white,
+                elevation: 2,
+              }}
+              inputStyle={{
+                color: "#1f2937",
+                fontSize: 16,
+              }}
               icon="magnify"
               iconColor="#64748b"
-              right={() => (
+              right={(props) => (
                 <TouchableOpacity
                   onPress={() => {}}
-                  className="bg-black rounded-md px-3 h-8 justify-center items-end ml-2"
+                  style={{
+                    marginRight: 8,
+                    backgroundColor: "#1f2937",
+                    paddingHorizontal: 16,
+                    paddingVertical: 6,
+                    borderRadius: 8,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  <Text className="text-white font-bold text-xs">Go</Text>
+                  <Text
+                    style={{
+                      color: COLORS.white,
+                      fontWeight: "600",
+                      fontSize: 13,
+                    }}
+                  >
+                    Go
+                  </Text>
                 </TouchableOpacity>
               )}
             />
