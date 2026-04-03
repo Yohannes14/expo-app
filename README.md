@@ -111,11 +111,10 @@ Pull-to-refresh
 ##  Screenshots
 
 ### Home Screen
-![Home](assets/screenshots/home.png)
-![image_alt](https://github.com/Yohannes14/expo-app/blob/5ad64e1d70b4e826446d515d0c9af284b8717b7f/assets/screenshots/details.png)
+![image_alt](assets/screenshots/details.png)
 
 ### Details Screen
-![](assets/screenshots/details.png)
+![image_alt](assets/screenshots/details.png)
 
 
 Acknowledgments
