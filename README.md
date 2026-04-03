@@ -73,7 +73,13 @@ Scan QR code with Expo Go app on your phone
 Environment Variables
 
 Create a .env file in the root of the project:env# .env
+# .env
 EXPO_PUBLIC_API_BASE_URL=https://pokeapi.co/api/v2
+EXPO_PUBLIC_API_TIMEOUT=10000
+
+# .env.production (auto-loaded in prod builds)
+EXPO_PUBLIC_API_BASE_URL=https://pokeapi.co/api/v2
+EXPO_PUBLIC_ENABLE_LOGGING=false
 Add .env to .gitignore:gitignore.env
 Environment config is defined in src/config/env.ts.
 
