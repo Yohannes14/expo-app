@@ -111,10 +111,10 @@ Pull-to-refresh
 ##  Screenshots
 
 ### Home Screen
-![Home](assets/screenshots/home.png)
+![](assets/screenshots/home.png)
 
 ### Details Screen
-![Details](assets/screenshots/details.png)
+![](assets/screenshots/details.png)
 
 
 Acknowledgments
