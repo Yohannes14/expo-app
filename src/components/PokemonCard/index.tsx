@@ -36,7 +36,7 @@ const PokemonCard = ({ pokemon, details, openDetails }: PokemonCardProps) => {
           {imageUri ? (
             <Image
               source={{ uri: imageUri }}
-              style={{ width: 80, height: 80 }}
+              style={{ width: 120, height: 120 }}
               resizeMode="contain"
             />
           ) : (

@@ -1,8 +1,8 @@
-# Pokémon App 📱
+# Pokémon App
 
 A modern, clean React Native application built with Expo and TypeScript. Browse Pokémon in a beautiful grid, search by name, and view detailed information with stats, types, and more.
 
-## ✨ Features
+## Features
 
 - Responsive 2-column Pokémon grid
 - Real-time search functionality
@@ -12,7 +12,7 @@ A modern, clean React Native application built with Expo and TypeScript. Browse 
 - Clean architecture with custom hooks and services
 - Modern styling using NativeWind (Tailwind CSS)
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```bash
 src/
@@ -69,7 +69,7 @@ Press a for Android Emulator
 Scan QR code with Expo Go app on your phone
 
 
-⚙️ Configuration
+ Configuration
 Environment Variables
 
 Create a .env file in the root of the project:env# .env
@@ -83,19 +83,19 @@ Home Screen: Browse and search Pokémon
 Detail Screen: Tap any Pokémon card to view full details
 Search: Type in the search bar to filter Pokémon instantly
 
-🏛️ Architecture
+ Architecture
 
 Custom Hooks for data fetching logic
 Services Layer for clean API calls
 Reusable Components with proper TypeScript props
 Centralized Error Handling using custom ApiError
 
-🎨 Styling
+ Styling
 
 NativeWind (Tailwind CSS) for clean and maintainable styles
 Consistent Pokémon type color system
 
-🔮 Future Enhancements
+ Future Enhancements
 
 Infinite scrolling and pagination
 Favorites / Wishlist feature

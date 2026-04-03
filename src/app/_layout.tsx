@@ -27,12 +27,10 @@ export default function RootLayout() {
             headerRight: () => (
               <View style={{ marginRight: 0 }}>
                 <Image
-                  source={{
-                    uri: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png",
-                  }}
+                  source={require("@/assets/images/img1.png")}
                   style={{
-                    width: 40,
-                    height: 40,
+                    width: 120,
+                    height: 120,
                     resizeMode: "contain",
                   }}
                 />

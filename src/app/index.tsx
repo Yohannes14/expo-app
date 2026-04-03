@@ -21,7 +21,7 @@ export default function HomeScreen() {
     error,
     loadMore,
     refresh,
-  } = usePokemonList(12);
+  } = usePokemonList(8);
 
   // Search filter
   const filteredList = useMemo(() => {
