@@ -1,13 +1,13 @@
 import { Text, TouchableOpacity, View } from "react-native";
 
-interface ErrorScreenProps {
+interface ErrorComponentProps {
   message?: string;
   onRetry?: () => void;
 }
 const ErrorComponent = ({
   message = "Failed to load Pokémon. Please try again.",
   onRetry,
-}: ErrorScreenProps) => {
+}: ErrorComponentProps) => {
   return (
     <View className="flex-1 justify-center items-center bg-slate-50 p-6">
       <Text className="text-red-500 text-center text-lg">{message}</Text>

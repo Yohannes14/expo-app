@@ -1,27 +1,34 @@
 import { PokemonApi } from "@/services/pokemon.service";
 import { PaginatedResponse, Pokemon, PokemonListItem } from "@/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface PokemonWithDetails extends PokemonListItem {
   details: Pokemon | null;
 }
 
-export const usePokemonList = (limit: number = 20, offset: number = 0) => {
+export const usePokemonList = (limit: number = 12) => {
   const [data, setData] = useState<PokemonWithDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
-    const fetchWithDetails = async () => {
+  // Initial fetch + fetch more
+  const fetchPokemon = useCallback(
+    async (isLoadMore = false) => {
       try {
-        setLoading(true);
-        setError(null);
+        if (isLoadMore) {
+          setLoadingMore(true);
+        } else {
+          setLoading(true);
+          setError(null);
+        }
 
-        // First get the basic list
         const listResponse: PaginatedResponse<PokemonListItem> =
           await PokemonApi.fetchPokemonList(limit, offset);
 
-        // Then fetch details for each pokemon
+        // Fetch details for each Pokémon
         const detailedList: PokemonWithDetails[] = await Promise.all(
           listResponse.results.map(async (pokemon: PokemonListItem) => {
             try {
@@ -36,22 +43,54 @@ export const usePokemonList = (limit: number = 20, offset: number = 0) => {
           }),
         );
 
-        setData(detailedList);
+        if (isLoadMore) {
+          setData((prev) => [...prev, ...detailedList]);
+        } else {
+          setData(detailedList);
+        }
+
+        // Check if there are more items
+        const newOffset = offset + limit;
+        setHasMore(!!listResponse.next && newOffset < listResponse.count);
+        setOffset(newOffset);
       } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to fetch Pokémon"),
-        );
+        const errorMessage =
+          err instanceof Error ? err : new Error("Failed to fetch Pokémon");
+        setError(errorMessage);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
-    };
+    },
+    [limit, offset],
+  );
 
-    fetchWithDetails();
-  }, [limit, offset]);
+  // Initial load
+  useEffect(() => {
+    fetchPokemon(false);
+  }, []); // Only run once on mount
+
+  // Load more function to be used in FlatList onEndReached
+  const loadMore = useCallback(() => {
+    if (loading || loadingMore || !hasMore) return;
+    fetchPokemon(true);
+  }, [loading, loadingMore, hasMore, fetchPokemon]);
+
+  // Refresh function
+  const refresh = useCallback(() => {
+    setOffset(0);
+    setData([]);
+    setHasMore(true);
+    fetchPokemon(false);
+  }, [fetchPokemon]);
 
   return {
     data,
-    loading,
+    loading, // Initial loading
+    loadingMore, // Loading more at bottom
     error,
+    hasMore,
+    loadMore,
+    refresh,
   };
 };
